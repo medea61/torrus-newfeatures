@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<!--
+   Copyright (C) 2014 Roman Hochuli
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+  $Id$
+  Roman Hochuli <roman@hochu.li>
+
+-->
+<!-- Common Datadomain definitions -->
+<configuration>
+  <definitions>
+    <!-- Data Domain enterprise MIB OID -->
+    <def name="ddFileSystemVirtualSpace"  value="1.3.6.1.4.1.19746.1.3.1.2"/>
+    <def name="ddMtreeListPreCompGib"     value="1.3.6.1.4.1.19746.1.15.2.1.1.3"/>
+    <def name="ddFileSystemSpaceSize"     value="1.3.6.1.4.1.19746.1.3.2.1.1.4"/>
+    <def name="ddfileSystemSpaceUsed"     value="1.3.6.1.4.1.19746.1.3.2.1.1.5"/>
+    <def name="ddfileSystemSpaceAvail"    value="1.3.6.1.4.1.19746.1.3.2.1.1.6"/>
+  </definitions>
+
+  
+  <datasources>
+    <template name="dd-filesystem-overview">
+     <param name="has-overview-shortcuts" value="yes"/>
+     <param name="overview-shortcuts" value="all"/>
+     <param name="overview-subleave-name-all">
+        Virtual_Space
+     </param>
+     <param name="overview-shortcut-text-all" value="Overview"/>
+     <param name="overview-shortcut-title-all" value="All important graphs on one page"/>
+     <param name="overview-page-title-all" value="Filesystem Virtual Space overview"/>
+     <param name="overview-direct-link-all" value="yes"/>
+    </template>
+
+    <template name="dd-filesystem-subtree">
+      <param name="comment" value="Filesystem statistics"/>
+      <param name="graph-title" value="%system-id% Filesystem %dd-fs-index%"/>
+      <param name="data-file" value="%system-id%_filesystem_%dd-fs-index%_%dd-datafile%.rrd"/>
+      <param name="rrd-create-dstype" value="GAUGE"/>
+      <param name="rrd-hwpredict" value="disabled"/>
+
+      <leaf name="Virtual_Space">
+        <param name="graph-title" value="Filesystem %dd-fs-index% Virtual Space"/>
+        <param name="comment" value="Size"/>
+        <param name="dd-datafile" value="filesys"/>
+        <param name="rrd-ds" value="filesystem_%dd-fs-index%"/>
+        <param name="snmp-object" value="$ddFileSystemVirtualSpace.%dd-fs-index%"/>
+        <param name="graph-legend" value="%dd-fs-index%"/>
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="999"/>
+        <!-- convert the measured value (in GB) to bytes before sending it to RRDtool -->
+        <param name="collector-scale" value="1e9,*"/>
+      </leaf>
+    </template>
+
+
+    <template name="dd-filesystemspace-overview">
+     <param name="has-overview-shortcuts" value="yes"/>
+     <param name="overview-shortcuts" value="all"/>
+     <param name="overview-subleave-name-all">
+        FilesystemSpace_Overview
+     </param>
+     <param name="overview-shortcut-text-all" value="Overview"/>
+     <param name="overview-shortcut-title-all" value="All important graphs on one page"/>
+     <param name="overview-page-title-all" value="FilesystemSpaces overview"/>
+     <param name="overview-direct-link-all" value="yes"/>
+    </template>
+
+    <template name="dd-filesystemspace-subtree">
+      <param name="comment" value="FilesystemSpace statistics"/>
+      <param name="graph-title" value="%system-id% FilesystemSpace %dd-fss-index%"/>
+      <param name="data-file" value="%system-id%_filesystemspace_%dd-fss-filename%.rrd"/>
+      <param name="rrd-create-dstype" value="GAUGE"/>
+      <param name="rrd-hwpredict" value="disabled"/>
+
+      <leaf name="FilesystemSpace_Overview">
+        <param name="comment" value="Filesystemspace Statistics"/>
+        <param name="graph-title" value="%system-id% FilesystemSpace %dd-fss-name%"/>
+        <param name="ds-type" value="rrd-multigraph"/>
+        <param name="ds-names" value="size,used,avail"/>
+        
+        <param name="ds-expr-used" value="{SpaceUsed}"/>
+        <param name="graph-legend-used" value="Used Space"/>
+        <param name="line-style-used" value="AREA"/>
+        <param name="line-color-used" value="##three"/>
+        <param name="line-order-used" value="1"/>
+        
+        <param name="ds-expr-avail" value="{SpaceAvailable}"/>
+        <param name="graph-legend-avail" value="Available Space"/>
+        <param name="line-style-avail" value="AREA"/>
+        <param name="line-color-avail" value="##one"/>
+        <param name="line-order-avail" value="2"/>
+        <param name="line-stack-avail" value="yes"/>
+        
+        <param name="ds-expr-size" value="{SpaceSize}"/>
+        <param name="graph-legend-size" value="Total Size"/>
+        <param name="line-style-size" value="LINE2"/>
+        <param name="line-color-size" value="##two"/>
+        <param name="line-order-size" value="5"/>
+        
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="1000"/>
+        <param name="graph-lower-limit" value="0"/>
+      </leaf>
+
+      <leaf name="SpaceSize">
+        <param name="graph-title" value="FilesystemSpace %dd-fss-name% Size"/>
+        <param name="comment" value="Size"/>
+        <param name="rrd-ds" value="size"/>
+        <param name="snmp-object" value="$ddFileSystemSpaceSize.%dd-fss-index%"/>
+        <param name="graph-legend" value="%dd-fss-name%"/>
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="999"/>
+        <!-- convert the measured value (in GB) to bytes before sending it to RRDtool -->
+        <param name="collector-scale" value="1e9,*"/>
+      </leaf>
+
+      <leaf name="SpaceUsed">
+        <param name="graph-title" value="FilesystemSpace %dd-fss-name% Used"/>
+        <param name="comment" value="Size"/>
+        <param name="rrd-ds" value="used"/>
+        <param name="snmp-object" value="$ddfileSystemSpaceUsed.%dd-fss-index%"/>
+        <param name="graph-legend" value="%dd-fss-name%"/>
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="998"/>
+        <!-- convert the measured value (in GB) to bytes before sending it to RRDtool -->
+        <param name="collector-scale" value="1e9,*"/>
+      </leaf>
+      
+      <leaf name="SpaceAvailable">
+        <param name="graph-title" value="FilesystemSpace %dd-fss-name% Available"/>
+        <param name="comment" value="Size"/>
+        <param name="rrd-ds" value="avail"/>
+        <param name="snmp-object" value="$ddfileSystemSpaceAvail.%dd-fss-index%"/>
+        <param name="graph-legend" value="%dd-fss-name%"/>
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="997"/>
+        <!-- convert the measured value (in GB) to bytes before sending it to RRDtool -->
+        <param name="collector-scale" value="1e9,*"/>
+      </leaf>
+    </template>
+
+
+    <template name="dd-mtree-overview">
+     <param name="has-overview-shortcuts" value="yes"/>
+     <param name="overview-shortcuts" value="all"/>
+     <param name="overview-subleave-name-all">
+        Pre_Compression_Size
+     </param>     
+     <param name="overview-shortcut-text-all" value="Overview"/>
+     <param name="overview-shortcut-title-all" value="All important graphs on one page"/>
+     <param name="overview-page-title-all" value="Mtree PreComp overview"/>
+     <param name="overview-direct-link-all" value="yes"/>
+    </template>
+
+    <template name="dd-mtree-subtree">
+      <param name="comment" value="Mtree statistics"/>
+      <param name="graph-title" value="%system-id% Mtree %dd-mtree-name%"/>
+      <param name="data-file" value="%system-id%_mtree_%dd-mtree-filename%_%dd-datafile%.rrd"/>
+      <param name="rrd-create-dstype" value="GAUGE"/>
+      <param name="rrd-hwpredict" value="disabled"/>
+
+      <leaf name="Pre_Compression_Size">
+        <param name="graph-title" value="Mtree %dd-mtree-name% Pre-Compression"/>
+        <param name="comment" value="Size"/>
+        <param name="dd-datafile" value="precompgig"/>
+        <param name="rrd-ds" value="mtree_%dd-mtree-index%"/>
+        <param name="snmp-object" value="$ddMtreeListPreCompGib.%dd-mtree-index%"/>
+        <param name="graph-legend" value="%dd-mtree-name%"/>
+        <param name="vertical-label" value="Bytes"/>
+        <param name="precedence" value="999"/>
+        <!-- convert the measured value (in GB) to bytes before sending it to RRDtool -->
+        <param name="collector-scale" value="1e9,*"/>
+      </leaf>
+    </template>
+
+  </datasources>
+</configuration>

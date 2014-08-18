@@ -47,6 +47,7 @@ dist_vendor_DATA = \
 	vendor/cisco.wlc.xml \
 	vendor/compaq.cim.xml \
 	vendor/comtechefdata.xml \
+	vendor/datadomain.xml \
 	vendor/empire.systemedge.xml \
 	vendor/empire.systemedge.ntregperf.xml \
 	vendor/f5.bigip.xml \

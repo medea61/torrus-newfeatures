@@ -72,6 +72,7 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
      'Torrus::DevDiscover::CiscoWLC',
      'Torrus::DevDiscover::CompaqCIM',
      'Torrus::DevDiscover::ComtechEFData',
+     'Torrus::DevDiscover::DataDomain',
      'Torrus::DevDiscover::EmpireSystemedge',
      'Torrus::DevDiscover::F5BigIp',
      'Torrus::DevDiscover::Foundry',
@@ -852,6 +853,32 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
      'ComtechEFData::cdmip' => {
          'name'     => 'cdmip',
          'source'   => 'vendor/comtechefdata.xml',
+     },
+
+     ##### EMC DataDomain
+     'DataDomain::dd-filesystem-subtree' => {
+         'name'     => 'dd-filesystem-subtree',
+         'source'   => 'vendor/datadomain.xml',
+     },
+     'DataDomain::dd-filesystem-overview' => {
+         'name'     => 'dd-filesystem-overview',
+         'source'   => 'vendor/datadomain.xml',
+     },
+     'DataDomain::dd-filesystemspace-subtree' => {
+         'name'     => 'dd-filesystemspace-subtree',
+         'source'   => 'vendor/datadomain.xml',
+     },
+     'DataDomain::dd-filesystemspace-overview' => {
+         'name'     => 'dd-filesystemspace-overview',
+         'source'   => 'vendor/datadomain.xml',
+     },
+     'DataDomain::dd-mtree-overview' => {
+         'name'     => 'dd-mtree-overview',
+         'source'   => 'vendor/datadomain.xml',
+     },
+     'DataDomain::dd-mtree-subtree' => {
+         'name'     => 'dd-mtree-subtree',
+         'source'   => 'vendor/datadomain.xml',
      },
 
      #### Empire Sysedge
