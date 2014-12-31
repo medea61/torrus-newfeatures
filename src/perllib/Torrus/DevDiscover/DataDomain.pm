@@ -226,7 +226,7 @@ sub buildConfig {
                     $cb->addSubtree( $fssSubtree, 'Filesystem_' . $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'}, $fssParam,
                                      ['DataDomain::dd-filesystemspace-subtree']);
 
-                if ($data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} == "Data") {
+                if ($data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} eq "Data") {
                    my $fsCompFactor->addLeaf($fsNode, 'Total_Compression_Factor', $fssParam,
                                            ['DataDomain::dd-filesystemspace-compfactor']);
                 }
