@@ -184,7 +184,7 @@ sub buildConfig {
                         'comment'  => "Filesystem " . $fsIndex,
                         'dd-fs-index' => $fsIndex,
                         'dd-fs-name' => $fsIndex,
-                        'nodeid' => 'ddfs//%nodeid-device%//' . $fsIndex,
+                        'nodeid' => 'ddfs/%nodeid-device%/' . $fsIndex,
                     };
 
 #                    Debug("Adding a Subtree for that Filesystem then.");
@@ -218,7 +218,7 @@ sub buildConfig {
                     'dd-fss-index' => $fssIndex,
                     'dd-fss-name' => $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'},
                     'dd-fss-filename' => $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'},
-                    'nodeid' => 'ddfss//%nodeid-device%//' . $fssIndex,
+                    'nodeid' => 'ddfss/%nodeid-device%/' . $fssIndex,
                 };
 
 #                Debug("Adding a Subtree for that Filesystem then.");
@@ -227,6 +227,7 @@ sub buildConfig {
                                      ['DataDomain::dd-filesystemspace-subtree']);
 
                 if ($data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} eq "Data") {
+                   $fssParam->{'nodeid'} = 'ddfss/%nodeid-device%/totcompfact';
                    my $fsCompFactor = $cb->addLeaf($fsNode, 'Total_Compression_Factor', $fssParam,
                                            ['DataDomain::dd-filesystemspace-compfactor']);
                 }
@@ -275,7 +276,7 @@ sub buildConfig {
                     'dd-mtree-index' => $mtreeIndex,
                     'dd-mtree-name' => $mtreeName,
                     'dd-mtree-filename' => $data->{'ddMtree'}{$mtreeIndex}{'sanitizedname'},
-                    'nodeid' => 'ddmt//%nodeid-device%//' . $mtreeIndex,
+                    'nodeid' => 'ddmt/%nodeid-device%/' . $mtreeIndex,
                 };
                 
 #                Debug("Adding a Subtree for that Mtree then.");
