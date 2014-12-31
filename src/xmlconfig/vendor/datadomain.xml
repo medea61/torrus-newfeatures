@@ -154,29 +154,20 @@
     </template>
 
     <template name="dd-filesystemspace-compfactor">
-      <leaf name="FSSCompFactorFilesystemSize">
-        <param name="ds-type" value="rrd-file"/>
-        <param name="data-file" value="%system-id%_filesystem_filesystem_0_filesys.rrd.rrd"/>
-        <!-- <param name="data-file" value="%system-id%_filesystem_%dd-fs-index%_%dd-datafile%.rrd"/> -->
-        <param name="leaf-type" value="rrd-ds"/>
-        <param name="rrd-ds" value="size"/>
-        <param name="hidden" value="true"/>
-      </leaf>
-
-      <leaf name="TotalCompressionFactor">
         <param name="comment" value="Total Compression Factor"/>
         <param name="graph-title" value="FilesystemSpace %dd-fss-index% Total Compression Factor"/>
-        <param name="data-file" value="%system-id%_filesystemspace_%dd-fss-filename%_totcompfactor.rrd"/>
-        <param name="rrd-create-dstype" value="GAUGE"/>
-        <param name="rrd-hwpredict" value="disabled"/>
+        <param name="ds-type" value="rrd-multigraph"/>
+        <param name="ds-names" value="compfact"/>
 
-        <param name="collector-type" value="cdef"/>
-        <param name="rrd-ds" value="compfact"/>
-        <param name="graph-legend" value="Tot. Comp. Factor"/>
+        <param name="ds-expr-compfact" value="{%totcompfac-vspath%Virtual_Space}, {SpaceUsed}, /"/>
+        <param name="graph-legend-compfact" value="Factor"/>
+        <param name="line-style-compfact" value="LINE2"/>
+        <param name="line-color-compfact" value="##two"/>
+        <param name="line-order-compfact" value="5"/>
+
         <param name="vertical-label" value="Factor"/>
-        <param name="precedence" value="996"/>
-        <param name="rpn-expr" value="{FSSCompFactorFilesystemSize}, {SpaceUsed}, /"/>
-      </leaf>
+        <param name="precedence" value="990"/>
+        <param name="graph-lower-limit" value="0"/>
     </template>
 
     <template name="dd-mtree-overview">

@@ -152,6 +152,7 @@ sub buildConfig {
     my $devdetails = shift;
     my $cb = shift;
     my $devNode = shift;
+    my $vspath = "/";
 
     my $data = $devdetails->data();
     Debug("Looks like we have got ourself a DataDomain system here.");
@@ -191,6 +192,7 @@ sub buildConfig {
                     my $fsNode =
                         $cb->addSubtree( $fsSubtree, 'Filesystem_' . $fsIndex, $fsParam,
                                          ['DataDomain::dd-filesystem-subtree']);
+                    $vspath = $cb->getElementPath($fsNode);
                 }
             }
         }
@@ -226,10 +228,13 @@ sub buildConfig {
                     $cb->addSubtree( $fssSubtree, 'Filesystem_' . $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'}, $fssParam,
                                      ['DataDomain::dd-filesystemspace-subtree']);
 
-                if ($data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} eq "Data") {
-                   $fssParam->{'nodeid'} = 'ddfss/%nodeid-device%/totcompfact';
-                   my $fsCompFactor = $cb->addLeaf($fsNode, 'Total_Compression_Factor', $fssParam,
-                                           ['DataDomain::dd-filesystemspace-compfactor']);
+                if( $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} eq "Data" ) {
+                   if( $vspath ne "/" ) {
+                      $fssParam->{'nodeid'} = 'ddfss/%nodeid-device%/totcompfact';
+                      $fssParam->{'totcompfac-vspath'} = $vspath;
+                      my $fsCompFactor = $cb->addLeaf($fsNode, 'Total_Compression_Factor', $fssParam,
+                                              ['DataDomain::dd-filesystemspace-compfactor']);
+                   }
                 }
             }
         }
