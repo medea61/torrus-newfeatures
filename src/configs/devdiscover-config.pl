@@ -872,6 +872,10 @@ $Torrus::DevDiscover::timeFormat = '%d-%m-%Y %H:%M';
          'name'     => 'dd-filesystemspace-overview',
          'source'   => 'vendor/datadomain.xml',
      },
+     'DataDomain::dd-filesystemspace-compfactor' => {
+         'name'     => 'dd-filesystemspace-compfactor',
+         'source'   => 'vendor/datadomain.xml',
+     },
      'DataDomain::dd-mtree-overview' => {
          'name'     => 'dd-mtree-overview',
          'source'   => 'vendor/datadomain.xml',

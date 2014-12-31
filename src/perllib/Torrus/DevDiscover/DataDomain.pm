@@ -225,6 +225,11 @@ sub buildConfig {
                 my $fsNode =
                     $cb->addSubtree( $fssSubtree, 'Filesystem_' . $data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'}, $fssParam,
                                      ['DataDomain::dd-filesystemspace-subtree']);
+
+                if ($data->{'ddFilesystem'}{'space'}{$fssIndex}{'name'} == "Data") {
+                   $fsCompFactor->addLeaf($fsNode, 'Total_Compression_Factor', $fssParam, 
+                                           ['DataDomain::dd-filesystemspace-compfactor']);
+                }
             }
         }
 
@@ -257,7 +262,7 @@ sub buildConfig {
                 # 
                 # As of the bitter realisation the index of Mtrees is not fix and may
                 # change at any time an Mtree is added or removed. This we must take 
-                # care to have a stable filename. We base it on the Mtrees name in
+                # care of to have a stable filename. We base it on the Mtrees name in
                 # this case and hope nobody comes ever to the idea of changing an
                 # Mtrees name which is actually possible on the UI... *sigh*
                 $data->{'ddMtree'}{$mtreeIndex}{'sanitizedname'} = $data->{'ddMtree'}{$mtreeIndex}{'name'};
